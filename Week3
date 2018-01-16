@@ -4,15 +4,15 @@
 ## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-  m <- NULL
-  set <- function(y) {
+  m <- NULL                                      ## initialize inverse as NULL
+  set <- function(y) {                           ## define the set function to assign new value to matrix from the parent enviroment.
     x <<- y
     m <<- NULL
   }
-  get <- function() x
-  setinverse <- function(inverse) m <<- inverse
-  getinverse <- function() m
-  list(set = set, get = get,
+  get <- function() x                            ## define the get function to return the cached matrix
+  setinverse <- function(inverse) m <<- inverse  ## define the setinverse function to assign the cached inverse of matrix from the parent environment
+  getinverse <- function() m                     ## define the get function to return the cached inverse of the matrix
+  list(set = set, get = get,                     ## set a list so that we can get through variable by using '$'
        setinverse = setinverse,
        getinverse = getinverse)
   
@@ -21,15 +21,14 @@ makeCacheMatrix <- function(x = matrix()) {
 
 ## Write a short comment describing this function
 
-cacheSolve <- function(x, ...) {
-  ## Return a matrix that is the inverse of 'x'
-  m <- x$getinverse()
-  if(!is.null(m)) {
-    message("getting cached inverse")
-    return(m)
+cacheSolve <- function(x, ...) {                 ## Return a matrix that is the inverse of 'x'
+  m <- x$getinverse()                            ## assign the cached inverse matrix to m
+  if(!is.null(m)) {                              ## if there exists a cached inverse
+    message("getting cached inverse")            ## inform the user that no computation needed
+    return(m)                                    ## return the cached inverse
   }
-  data <- x$get()
-  m <- solve(x, ...)
-  x$setinverse(m)
-  m
+  data <- x$get()                                ## if there is no cached inverse, assign the cached value
+  m <- solve(x, ...)                             ## Calculate the inverse
+  x$setinverse(m)                                ## assign the computing inverse
+  m                                              ## return the computing inverse of the matrix
 }
